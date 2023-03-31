@@ -64,7 +64,7 @@ const Fret: FunctionComponent<FretProps> = ({ rootNotes, fretNumber, highlighted
     });
   };
 
-  return <FretContainer>{renderStrings()}</FretContainer>;
+  return <FretContainer>{renderStrings()}{fretNumber}</FretContainer>;
 };
 
 export default Fret;
