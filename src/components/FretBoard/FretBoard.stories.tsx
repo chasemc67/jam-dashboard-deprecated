@@ -1,3 +1,4 @@
+// FretBoard.stories.tsx
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
 import FretBoard, { FretBoardProps } from './FretBoard';
@@ -13,13 +14,16 @@ export const Default = Template.bind({});
 Default.args = {
   rootNotes: ['E', 'A', 'D', 'G', 'B', 'E'],
   highlightedNotes: [
-    {
-      note: 'A',
-      color: 'red',
-    },
-    {
-      note: 'C',
-      color: 'green',
-    },
+    { note: 'C', color: 'red' },
+    { note: 'E', color: 'blue' },
   ],
+  numberOfFrets: 12,
+  startingFret: 0,
+};
+
+export const Custom = Template.bind({});
+Custom.args = {
+  ...Default.args,
+  numberOfFrets: 8,
+  startingFret: 5,
 };
