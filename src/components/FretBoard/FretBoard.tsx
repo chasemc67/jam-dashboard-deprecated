@@ -12,9 +12,10 @@ export type FretBoardProps = {
   highlightedNotes: HighlightedNote[];
   numberOfFrets: number;
   startingFret: number;
+  showTextNotes?: boolean;
 };
 
-const FretBoard: FunctionComponent<FretBoardProps> = ({ rootNotes, highlightedNotes, numberOfFrets, startingFret }) => {
+const FretBoard: FunctionComponent<FretBoardProps> = ({ rootNotes, highlightedNotes, numberOfFrets, startingFret, showTextNotes }) => {
   const renderFrets = () => {
     const frets = [];
     for (let i = 0; i < numberOfFrets; i++) {
@@ -24,6 +25,7 @@ const FretBoard: FunctionComponent<FretBoardProps> = ({ rootNotes, highlightedNo
           rootNotes={rootNotes} // Pass the entire rootNotes array to each Fret
           fretNumber={startingFret + i} // Use startingFret to calculate the fretNumber for each Fret
           highlightedNotes={highlightedNotes}
+          showTextNotes={showTextNotes}
         />
       );
     }

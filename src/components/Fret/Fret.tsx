@@ -12,6 +12,7 @@ export type FretProps = {
   rootNotes: string[];
   fretNumber: number;
   highlightedNotes: HighlightedNote[];
+  showTextNotes?: boolean;
 };
 
 const FretContainer = styled.div`
@@ -25,39 +26,40 @@ const FretContainer = styled.div`
   height: 300px;
 `;
 
-const FretString = styled.div<{ highlighted: boolean; noteColor: string }>`
-  position: relative;
+const FretString = styled.div`
   height: 2px;
   background-color: #808080;
-
-  &:before {
-    content: ${({ highlighted }) => (highlighted ? '""' : 'none')};
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20px;
-    height: 20px;
-    background-color: ${({ noteColor }) => noteColor};
-    border-radius: 50%;
-    top: -9px;
-  }
+  position: relative;
 `;
 
-const Fret: FunctionComponent<FretProps> = ({ rootNotes, fretNumber, highlightedNotes }) => {
-  const isHighlighted = (note: string): HighlightedNote | undefined => {
-    return highlightedNotes.find((highlightedNote) => highlightedNote.note === note);
-  };
+const NoteCircle = styled.div<{ color: string }>`
+  background-color: ${(props) => props.color};
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: -9px;
+  left: calc(50% - 10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+`;
 
+const Fret: FunctionComponent<FretProps> = ({ rootNotes, fretNumber, highlightedNotes, showTextNotes }) => {
   const renderStrings = () => {
-    return rootNotes.map((note, index) => {
-      const fretNote = getNoteAtFret(note, fretNumber);
-      const highlightedNote = isHighlighted(fretNote);
+    return rootNotes.map((rootNote, index) => {
+      const currentNote = getNoteAtFret(rootNote, fretNumber);
+      const highlightedNote = highlightedNotes.find((hn) => hn.note === currentNote);
+
       return (
-        <FretString
-          key={index}
-          highlighted={!!highlightedNote}
-          noteColor={highlightedNote?.color || 'transparent'}
-        />
+        <FretString key={index}>
+          {highlightedNote && (
+            <NoteCircle color={highlightedNote.color}>
+              {showTextNotes && currentNote}
+            </NoteCircle>
+          )}
+        </FretString>
       );
     });
   };
