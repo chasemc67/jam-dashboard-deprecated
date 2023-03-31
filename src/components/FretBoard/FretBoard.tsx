@@ -13,17 +13,23 @@ export type FretBoardProps = {
   numberOfFrets: number;
   startingFret: number;
   showTextNotes?: boolean;
+  isLeftHanded?: boolean;
 };
 
-const FretBoard: FunctionComponent<FretBoardProps> = ({ rootNotes, highlightedNotes, numberOfFrets, startingFret, showTextNotes }) => {
+const FretBoard: FunctionComponent<FretBoardProps> = ({ rootNotes, highlightedNotes, numberOfFrets, startingFret, showTextNotes, isLeftHanded }) => {
   const renderFrets = () => {
     const frets = [];
-    for (let i = 0; i < numberOfFrets; i++) {
+
+    let i = isLeftHanded ? numberOfFrets - 1 : 0;
+    const increment = isLeftHanded ? -1 : 1;
+    const compare = (j: number) => isLeftHanded ? j >= 0 : j < numberOfFrets ;
+
+    for (; compare(i); i+=increment) {
       frets.push(
         <Fret
           key={i}
-          rootNotes={rootNotes} // Pass the entire rootNotes array to each Fret
-          fretNumber={startingFret + i} // Use startingFret to calculate the fretNumber for each Fret
+          rootNotes={rootNotes}
+          fretNumber={startingFret + i + 1} 
           highlightedNotes={highlightedNotes}
           showTextNotes={showTextNotes}
         />

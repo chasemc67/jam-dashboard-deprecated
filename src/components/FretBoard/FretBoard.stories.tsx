@@ -20,4 +20,5 @@ Default.args = {
   numberOfFrets: 12,
   startingFret: 0,
   showTextNotes: true,
+  isLeftHanded: true,
 };
