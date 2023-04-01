@@ -16,8 +16,8 @@ export type FretProps = {
 };
 
 const getFretWidth = (fretNumber: number): string => {
-  const baseWidth = 80;
-  const factor = 0.98;
+  const baseWidth = 120;
+  const factor = 0.94;
   return `${baseWidth * Math.pow(factor, fretNumber)}px`;
 };
 
@@ -37,6 +37,7 @@ const FretString = styled.div`
   height: 2px;
   background-color: #808080;
   position: relative;
+  z-index: 2;
 `;
 
 const NoteCircle = styled.div<{ color: string }>`
@@ -51,17 +52,18 @@ const NoteCircle = styled.div<{ color: string }>`
   align-items: center;
   justify-content: center;
   color: #ffffff;
+  z-index: 3;
 `;
 
-const FretMarker = styled.div`
-  background-color: #000;
-  border-radius: 50%;
-  width: 10px;
-  height: 10px;
+const FretMarker = styled.div<{ tallMarker?: boolean }>`
+  background-color: #aaa;
+  width: 75%;
+  height: ${(props) => (props.tallMarker ? '50%' : '25%')};
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 1;
 `;
 
 const Fret: FunctionComponent<FretProps> = ({ rootNotes, fretNumber, highlightedNotes, showTextNotes }) => {
@@ -84,12 +86,14 @@ const Fret: FunctionComponent<FretProps> = ({ rootNotes, fretNumber, highlighted
 
   const fretWidth = getFretWidth(fretNumber);
   const fretMarkers = [3, 5, 7, 9, 12, 15, 17, 19, 24];
+  const tallMarkerFrets = [12, 24];
 
   return (
     <FretContainer fretWidth={fretWidth}>
       {renderStrings()}
-      {fretMarkers.includes(fretNumber) && <FretMarker />}
-      {fretNumber}
+      {fretMarkers.includes(fretNumber) && (
+        <FretMarker tallMarker={tallMarkerFrets.includes(fretNumber)} />
+      )}
     </FretContainer>
   );
 };
