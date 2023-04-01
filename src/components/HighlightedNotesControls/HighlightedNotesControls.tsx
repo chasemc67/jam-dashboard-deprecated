@@ -1,144 +1,109 @@
-// HighlightedNotesControls.tsx
 import React, { FunctionComponent, useState } from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
+const HighlightedNotesControlsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-top: 20px;
 `;
 
 const TextInput = styled.input`
-  width: 200px;
-  height: 30px;
-  margin-bottom: 10px;
-`;
-
-const NoteButton = styled.button<{ backgroundColor: string }>`
-  width: 30px;
-  height: 30px;
-  background-color: ${(props) => props.backgroundColor};
-  margin-right: 5px;
-  color: white;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-`;
-
-const ButtonsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const ColorPicker = styled.select`
   width: 100%;
 `;
 
-const colors = [
-  { name: 'Grey', value: 'grey' },
-  { name: 'Blue', value: 'blue' },
-  { name: 'Red', value: 'red' },
-  { name: 'Green', value: 'green' },
-  { name: 'Orange', value: 'orange' },
-  { name: 'Brown', value: 'brown' },
-  { name: 'Purple', value: 'purple' },
-  { name: 'Teal', value: 'teal' },
-];
+const ColorButton = styled.div<{ color: string }>`
+  width: 30px;
+  height: 30px;
+  background-color: ${(props) => props.color};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  cursor: pointer;
+`;
 
-interface HighlightedNote {
-  note: string;
-  color: string;
-}
+const ColorButtonsContainer = styled.div`
+  display: flex;
+  margin-top: 10px;
+`;
+
+const ColorDropdown = styled.select`
+  position: absolute;
+`;
 
 export type HighlightedNotesControlsProps = {
-  highlightedNotes: HighlightedNote[];
-  setHighlightedNotes: (notes: HighlightedNote[]) => void;
+  highlightedNotes: { note: string; color: string }[];
+  setHighlightedNotes: (notes: { note: string; color: string }[]) => void;
 }
 
 const HighlightedNotesControls: FunctionComponent<HighlightedNotesControlsProps> = ({
   highlightedNotes,
   setHighlightedNotes,
 }) => {
-  const [inputValue, setInputValue] = useState(
-    highlightedNotes.map((n) => n.note).join(', ')
+  const [textInputValue, setTextInputValue] = useState('');
+  const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(
+    null
   );
 
   const handleInputChange = (value: string) => {
-    setInputValue(value);
-
-    const notes = value
-      .split(',')
-      .map((note) => note.trim().toUpperCase())
-      .filter((note) => note);
-
-    const updatedHighlightedNotes = notes.map((note) => {
-      const existingNote = highlightedNotes.find((n) => n.note === note);
-      return existingNote || { note, color: 'grey' };
-    });
-
-    setHighlightedNotes(updatedHighlightedNotes);
+    setTextInputValue(value);
+    const notes = value.split(',').map((note) => note.trim());
+    const newHighlightedNotes = notes.map((note) => ({
+      note,
+      color: 'grey',
+    }));
+    setHighlightedNotes(newHighlightedNotes);
   };
 
-  const handleColorChange = (note: string, color: string) => {
-    const updatedHighlightedNotes = highlightedNotes.map((n) =>
-      n.note === note ? { ...n, color } : n
-    );
-
+  const handleColorChange = (index: number, color: string) => {
+    const updatedHighlightedNotes = [...highlightedNotes];
+    updatedHighlightedNotes[index].color = color;
     setHighlightedNotes(updatedHighlightedNotes);
+    setSelectedColorIndex(null);
   };
 
-  const renderColorPicker = (note: string, currentColor: string) => (
-    <ColorPicker
-      value={currentColor}
-      onChange={(e) => handleColorChange(note, e.target.value)}
-    >
-      {colors.map((color) => (
-        <option key={color.value} value={color.value}>
-          {color.name}
-        </option>
-      ))}
-    </ColorPicker>
-  );
+  const renderColorButtons = () => {
+    return highlightedNotes.map((highlightedNote, index) => (
+      <ColorButton
+        key={index}
+        color={highlightedNote.color}
+        onClick={(e) => {
+          e.stopPropagation();
+          setSelectedColorIndex(index);
+        }}
+        role="button"
+      >
+        {highlightedNote.note}
+        {selectedColorIndex === index && (
+          <ColorDropdown
+            onChange={(e) => {
+              handleColorChange(index, e.target.value);
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <option value="default">Default</option>
+            <option value="blue">Blue</option>
+            <option value="red">Red</option>
+            <option value="green">Green</option>
+            <option value="orange">Orange</option>
+            <option value="brown">Brown</option>
+            <option value="purple">Purple</option>
+            <option value="teal">Teal</option>
+          </ColorDropdown>
+        )}
+      </ColorButton>
+    ));
+  };
 
   return (
-    <Container>
+    <HighlightedNotesControlsContainer>
       <TextInput
-        value={inputValue}
+        value={textInputValue}
         onChange={(e) => handleInputChange(e.target.value)}
-        placeholder="Enter comma-separated notes"
+        placeholder="Enter comma-separated notes (e.g. C, D, E, F)"
       />
-      <ButtonsContainer>
-        {highlightedNotes.map((highlightedNote, index) => (
-          <NoteButton
-            key={index}
-            backgroundColor={highlightedNote.color}
-            onClick={() => {
-              const colorPicker = document.getElementById(
-                `color-picker-${index}`
-                ) as HTMLSelectElement;
-      
-                if (colorPicker) {
-                  colorPicker.style.display =
-                    colorPicker.style.display === 'none' ? 'block' : 'none';
-                }
-              }}
-            >
-              {highlightedNote.note}
-              <div
-                id={`color-picker-${index}`}
-                style={{ display: 'none', position: 'absolute' }}
-              >
-                {renderColorPicker(
-                  highlightedNote.note,
-                  highlightedNote.color
-                )}
-              </div>
-            </NoteButton>
-          ))}
-        </ButtonsContainer>
-      </Container>
+      <ColorButtonsContainer>{renderColorButtons()}</ColorButtonsContainer>
+    </HighlightedNotesControlsContainer>
   );
-};                     
+};
 
 export default HighlightedNotesControls;
