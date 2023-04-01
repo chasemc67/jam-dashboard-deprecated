@@ -7,6 +7,16 @@ With Jam Dashboard you can highlight just the notes you need, in any tuning, and
 <img width="1722" alt="Screenshot 2023-03-31 at 9 56 44 PM" src="https://user-images.githubusercontent.com/6922982/229266427-300f405f-9b37-4502-83d9-df733fd2b91a.png">
 
 ## Running Locally
+```
+npm start
+npm run storybook
+```
+
+## Deploying Changes to Firebase
+```
+npm run build
+firebase deploy
+```
 
 ### `npm start`
 
@@ -45,11 +55,6 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-
-## Deploying Changes to Firebase
-
-### `npm run build`
-### `firebase deploy`
 
 
 ## Learn More
