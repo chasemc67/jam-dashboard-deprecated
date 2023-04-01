@@ -11,18 +11,23 @@ const FretboardControlsContainer = styled.div<{ isLeftHanded: boolean }>`
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  height: 330px;
 `;
 
 const TextInput = styled.input`
   width: 30px;
   height: 30px;
-  margin-bottom: 10px;
   text-align: center;
 `;
 
-const FretboardControls: FunctionComponent = ({
-}) => {
+const StringInput = styled.div`
+  display: flex;
+  align-items: start;
+  height: calc(100% / 6);
+`;
+
+const FretboardControls: FunctionComponent = () => {
   const [rootNotes, setRootNotes] = useState(['E', 'A', 'D', 'G', 'B', 'E']);
 
   const highlightedNotes = [
@@ -47,11 +52,12 @@ const FretboardControls: FunctionComponent = ({
 
   const renderInputs = () => {
     return rootNotes.map((note, index) => (
-      <TextInput
-        key={index}
-        value={note}
-        onChange={(e) => handleInputChange(index, e.target.value)}
-      />
+      <StringInput key={index}>
+        <TextInput
+          value={note}
+          onChange={(e) => handleInputChange(index, e.target.value)}
+        />
+      </StringInput>
     ));
   };
 
