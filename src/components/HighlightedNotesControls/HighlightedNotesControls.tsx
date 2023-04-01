@@ -32,7 +32,7 @@ const ButtonsContainer = styled.div`
 `;
 
 const ColorPicker = styled.select`
-  width: 50%;
+  width: 60%;
 `;
 
 const colors = [
