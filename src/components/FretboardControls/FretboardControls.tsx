@@ -31,6 +31,18 @@ const StringInput = styled.div`
   height: calc(100% / 6);
 `;
 
+const CheckboxContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+`;
+
+const CheckboxLabel = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`;
+
 const FretboardControls: FunctionComponent = () => {
   const [rootNotes, setRootNotes] = useState(['E', 'A', 'D', 'G', 'B', 'E']);
   const [highlightedNotes, setHighlightedNotes] = useState<HighlightedNote[]>([
@@ -43,10 +55,10 @@ const FretboardControls: FunctionComponent = () => {
     { note: 'B', color: 'teal' },
   ]);
 
-  const numberOfFrets = 12;
-  const startingFret = 0;
-  const showTextNotes = true;
-  const isLeftHanded = false;
+  const [numberOfFrets, setNumberOfFrets] = useState(12);
+  const [startingFret, setStartingFret] = useState(0);
+  const [showTextNotes, setShowTextNotes] = useState(true);
+  const [isLeftHanded, setIsLeftHanded] = useState(false);
 
   const handleInputChange = (index: number, value: string) => {
     const updatedRootNotes = [...rootNotes];
@@ -88,6 +100,23 @@ const FretboardControls: FunctionComponent = () => {
         highlightedNotes={highlightedNotes}
         setHighlightedNotes={setHighlightedNotes}
       />
+      <CheckboxContainer>
+        <CheckboxLabel>
+            <input
+                type="checkbox"
+                checked={isLeftHanded}
+                onChange={() => setIsLeftHanded(!isLeftHanded)}
+            /> Left Handed
+        </CheckboxLabel>
+        <CheckboxLabel>
+            <input
+            type="checkbox"
+            checked={showTextNotes}
+            onChange={() => setShowTextNotes(!showTextNotes)}
+            />
+            Show Text Notes
+        </CheckboxLabel>
+    </CheckboxContainer>
     </div>
   );
 };
