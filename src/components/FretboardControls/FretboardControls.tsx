@@ -6,16 +6,20 @@ import HighlightedNotesControls from '../HighlightedNotesControls';
 import { HighlightedNote } from '../Fret';
 
 
-const FretboardControlsContainer = styled.div<{ isLeftHanded: boolean }>`
+const FretboardControlsContainer = styled.div`
   display: flex;
-  flex-direction: ${(props) => (props.isLeftHanded ? 'row-reverse' : 'row')};
 `;
 
-const InputContainer = styled.div`
+const InputContainer = styled.div<{ isLeftHanded: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 330px;
+  order: ${(props) => (props.isLeftHanded ? 1 : 0)};
+`;
+
+const FretBoardWrapper = styled.div<{ isLeftHanded: boolean }>`
+  order: ${(props) => (props.isLeftHanded ? 0 : 1)};
 `;
 
 const TextInput = styled.input<{ borderColor: string }>`
@@ -85,16 +89,18 @@ const FretboardControls: FunctionComponent = () => {
 
   return (
     <div>
-      <FretboardControlsContainer isLeftHanded={isLeftHanded}>
-        <InputContainer>{renderInputs()}</InputContainer>
-        <FretBoard
-          rootNotes={rootNotes}
-          highlightedNotes={highlightedNotes}
-          numberOfFrets={numberOfFrets}
-          startingFret={startingFret}
-          showTextNotes={showTextNotes}
-          isLeftHanded={isLeftHanded}
-        />
+      <FretboardControlsContainer>
+        <InputContainer isLeftHanded={isLeftHanded}>{renderInputs()}</InputContainer>
+        <FretBoardWrapper isLeftHanded={isLeftHanded}>
+            <FretBoard
+            rootNotes={rootNotes}
+            highlightedNotes={highlightedNotes}
+            numberOfFrets={numberOfFrets}
+            startingFret={startingFret}
+            showTextNotes={showTextNotes}
+            isLeftHanded={isLeftHanded}
+            />
+        </FretBoardWrapper>
       </FretboardControlsContainer>
       <HighlightedNotesControls
         highlightedNotes={highlightedNotes}
