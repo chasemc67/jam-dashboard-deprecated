@@ -2,6 +2,9 @@
 import React, { FunctionComponent, useState } from 'react';
 import styled from 'styled-components';
 import FretBoard, { FretBoardProps } from '../FretBoard';
+import HighlightedNotesControls from '../HighlightedNotesControls';
+import { HighlightedNote } from '../Fret';
+
 
 const FretboardControlsContainer = styled.div<{ isLeftHanded: boolean }>`
   display: flex;
@@ -30,8 +33,7 @@ const StringInput = styled.div`
 
 const FretboardControls: FunctionComponent = () => {
   const [rootNotes, setRootNotes] = useState(['E', 'A', 'D', 'G', 'B', 'E']);
-
-  const highlightedNotes = [
+  const [highlightedNotes, setHighlightedNotes] = useState<HighlightedNote[]>([
     { note: 'C', color: 'blue' },
     { note: 'D', color: 'red' },
     { note: 'E', color: 'green' },
@@ -39,7 +41,8 @@ const FretboardControls: FunctionComponent = () => {
     { note: 'G', color: 'brown' },
     { note: 'A', color: 'purple' },
     { note: 'B', color: 'teal' },
-  ];
+  ]);
+
   const numberOfFrets = 12;
   const startingFret = 0;
   const showTextNotes = true;
@@ -69,17 +72,23 @@ const FretboardControls: FunctionComponent = () => {
   };
 
   return (
-    <FretboardControlsContainer isLeftHanded={isLeftHanded}>
-      <InputContainer>{renderInputs()}</InputContainer>
-      <FretBoard
-        rootNotes={rootNotes}
+    <div>
+      <FretboardControlsContainer isLeftHanded={isLeftHanded}>
+        <InputContainer>{renderInputs()}</InputContainer>
+        <FretBoard
+          rootNotes={rootNotes}
+          highlightedNotes={highlightedNotes}
+          numberOfFrets={numberOfFrets}
+          startingFret={startingFret}
+          showTextNotes={showTextNotes}
+          isLeftHanded={isLeftHanded}
+        />
+      </FretboardControlsContainer>
+      <HighlightedNotesControls
         highlightedNotes={highlightedNotes}
-        numberOfFrets={numberOfFrets}
-        startingFret={startingFret}
-        showTextNotes={showTextNotes}
-        isLeftHanded={isLeftHanded}
+        setHighlightedNotes={setHighlightedNotes}
       />
-    </FretboardControlsContainer>
+    </div>
   );
 };
 

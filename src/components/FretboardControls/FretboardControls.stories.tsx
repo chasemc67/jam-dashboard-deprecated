@@ -7,6 +7,6 @@ export default {
   component: FretboardControls,
 } as Meta;
 
-const Template: Story<FretBoardProps> = () => <FretboardControls />;
+const Template: Story = () => <FretboardControls />;
 
 export const Default = Template.bind({});
