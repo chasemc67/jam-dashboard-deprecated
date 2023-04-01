@@ -15,14 +15,21 @@ export type FretProps = {
   showTextNotes?: boolean;
 };
 
-const FretContainer = styled.div`
+const getFretWidth = (fretNumber: number): string => {
+  const baseWidth = 80;
+  const factor = 0.98;
+  return `${baseWidth * Math.pow(factor, fretNumber)}px`;
+};
+
+const FretContainer = styled.div<{ fretWidth: string }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   background-color: #f0e9e2;
   border: 1px solid #c0b7a8;
   padding: 10px;
-  width: 80px;
+  position: relative;
+  width: ${(props) => props.fretWidth};
   height: 300px;
 `;
 
@@ -46,6 +53,17 @@ const NoteCircle = styled.div<{ color: string }>`
   color: #ffffff;
 `;
 
+const FretMarker = styled.div`
+  background-color: #000;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
 const Fret: FunctionComponent<FretProps> = ({ rootNotes, fretNumber, highlightedNotes, showTextNotes }) => {
   const renderStrings = () => {
     return rootNotes.map((rootNote, index) => {
@@ -64,7 +82,16 @@ const Fret: FunctionComponent<FretProps> = ({ rootNotes, fretNumber, highlighted
     });
   };
 
-  return <FretContainer>{renderStrings()}{fretNumber}</FretContainer>;
+  const fretWidth = getFretWidth(fretNumber);
+  const fretMarkers = [3, 5, 7, 9, 12, 15, 17, 19, 24];
+
+  return (
+    <FretContainer fretWidth={fretWidth}>
+      {renderStrings()}
+      {fretMarkers.includes(fretNumber) && <FretMarker />}
+      {fretNumber}
+    </FretContainer>
+  );
 };
 
 export default Fret;

@@ -13,9 +13,13 @@ export const Default = Template.bind({});
 Default.args = {
   rootNotes: ['E', 'A', 'D', 'G', 'B', 'E'],
   highlightedNotes: [
-    { note: 'A', color: 'red' },
     { note: 'C', color: 'blue' },
-    { note: 'D', color: 'green' },
+    { note: 'D', color: 'red' },
+    { note: 'E', color: 'green' },
+    { note: 'F', color: 'orange' },
+    { note: 'G', color: 'brown' },
+    { note: 'A', color: 'purple' },
+    { note: 'B', color: 'teal' },
   ],
   numberOfFrets: 12,
   startingFret: 0,
