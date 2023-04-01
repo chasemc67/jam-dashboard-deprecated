@@ -32,7 +32,7 @@ const ButtonsContainer = styled.div`
 `;
 
 const ColorPicker = styled.select`
-  width: 100%;
+  width: 50%;
 `;
 
 const colors = [
@@ -110,32 +110,18 @@ const HighlightedNotesControls: FunctionComponent<HighlightedNotesControlsProps>
       />
       <ButtonsContainer>
         {highlightedNotes.map((highlightedNote, index) => (
+            <div>
           <NoteButton
             key={index}
             backgroundColor={highlightedNote.color}
-            onClick={() => {
-              const colorPicker = document.getElementById(
-               
-                `color-picker-${index}`
-                ) as HTMLSelectElement;
-      
-                if (colorPicker) {
-                  colorPicker.style.display =
-                    colorPicker.style.display === 'none' ? 'block' : 'none';
-                }
-              }}
             >
               {highlightedNote.note}
-              <div
-                id={`color-picker-${index}`}
-                style={{ display: 'none', position: 'absolute' }}
-              >
-                {renderColorPicker(
+            </NoteButton>
+            {renderColorPicker(
                   highlightedNote.note,
                   highlightedNote.color
                 )}
-              </div>
-            </NoteButton>
+            </div>
           ))}
         </ButtonsContainer>
       </Container>
