@@ -15,10 +15,11 @@ const InputContainer = styled.div`
   height: 330px;
 `;
 
-const TextInput = styled.input`
+const TextInput = styled.input<{ borderColor: string }>`
   width: 30px;
   height: 30px;
   text-align: center;
+  border: 5px solid ${(props) => props.borderColor};
 `;
 
 const StringInput = styled.div`
@@ -50,12 +51,18 @@ const FretboardControls: FunctionComponent = () => {
     setRootNotes(updatedRootNotes);
   };
 
+  const getOutlineColor = (note: string) => {
+    const foundNote = highlightedNotes.find((n) => n.note === note);
+    return foundNote ? foundNote.color : 'black';
+  };
+
   const renderInputs = () => {
     return rootNotes.map((note, index) => (
       <StringInput key={index}>
         <TextInput
           value={note}
           onChange={(e) => handleInputChange(index, e.target.value)}
+          borderColor={getOutlineColor(note)}
         />
       </StringInput>
     ));
