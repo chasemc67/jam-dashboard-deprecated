@@ -62,7 +62,7 @@ const FretboardControls: FunctionComponent = () => {
   const [numberOfFrets, setNumberOfFrets] = useState(12);
   const [startingFret, setStartingFret] = useState(0);
   const [showTextNotes, setShowTextNotes] = useState(true);
-  const [isLeftHanded, setIsLeftHanded] = useState(true);
+  const [isLeftHanded, setIsLeftHanded] = useState(false);
 
   const handleInputChange = (index: number, value: string) => {
     const updatedRootNotes = [...rootNotes];
