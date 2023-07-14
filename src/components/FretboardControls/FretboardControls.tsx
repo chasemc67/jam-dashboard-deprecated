@@ -95,13 +95,17 @@ const FretboardControls: FunctionComponent = () => {
             newIsFocused[index] = true;
             setIsFocused(newIsFocused);
             setTempInput(e.target.value);
+            e.target.value = tempInput === note ? "" : note;
           }}
-          onChange={(e) => handleInputChange(index, e.target.value)}
+          onChange={(e) => {
+            handleInputChange(index, e.target.value);
+            setTempInput(e.target.value);
+          }}
           onBlur={(e) => {
             const newIsFocused = [...isFocused];
             newIsFocused[index] = false;
             setIsFocused(newIsFocused);
-            if (e.target.value == "") handleInputChange(index, tempInput);
+            if (e.target.value == tempInput) handleInputChange(index, note);
           }}
           borderColor={getOutlineColor(note)}
         />
