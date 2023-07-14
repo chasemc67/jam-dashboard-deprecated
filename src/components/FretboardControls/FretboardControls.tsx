@@ -1,10 +1,9 @@
 // FretboardControls.tsx
-import React, { FunctionComponent, useState } from 'react';
-import styled from 'styled-components';
-import FretBoard, { FretBoardProps } from '../FretBoard';
-import HighlightedNotesControls from '../HighlightedNotesControls';
-import { HighlightedNote } from '../Fret';
-
+import React, { FunctionComponent, useState } from "react";
+import styled from "styled-components";
+import FretBoard, { FretBoardProps } from "../FretBoard";
+import HighlightedNotesControls from "../HighlightedNotesControls";
+import { HighlightedNote } from "../Fret";
 
 const FretboardControlsContainer = styled.div`
   display: flex;
@@ -48,21 +47,22 @@ const CheckboxLabel = styled.label`
 `;
 
 const FretboardControls: FunctionComponent = () => {
-  const [rootNotes, setRootNotes] = useState(['E', 'A', 'D', 'G', 'B', 'E']);
+  const [rootNotes, setRootNotes] = useState(["E", "A", "D", "G", "B", "E"]);
   const [highlightedNotes, setHighlightedNotes] = useState<HighlightedNote[]>([
-    { note: 'C', color: 'blue' },
-    { note: 'D', color: 'red' },
-    { note: 'E', color: 'green' },
-    { note: 'F', color: 'orange' },
-    { note: 'G', color: 'brown' },
-    { note: 'A', color: 'purple' },
-    { note: 'B', color: 'teal' },
+    { note: "C", color: "blue" },
+    { note: "D", color: "red" },
+    { note: "E", color: "green" },
+    { note: "F", color: "orange" },
+    { note: "G", color: "brown" },
+    { note: "A", color: "purple" },
+    { note: "B", color: "teal" },
   ]);
 
   const [numberOfFrets, setNumberOfFrets] = useState(12);
   const [startingFret, setStartingFret] = useState(0);
   const [showTextNotes, setShowTextNotes] = useState(true);
   const [isLeftHanded, setIsLeftHanded] = useState(false);
+  const [tempInput, setTempInput] = useState("");
 
   const handleInputChange = (index: number, value: string) => {
     const updatedRootNotes = [...rootNotes];
@@ -72,7 +72,7 @@ const FretboardControls: FunctionComponent = () => {
 
   const getOutlineColor = (note: string) => {
     const foundNote = highlightedNotes.find((n) => n.note === note);
-    return foundNote ? foundNote.color : 'black';
+    return foundNote ? foundNote.color : "black";
   };
 
   const renderInputs = () => {
@@ -80,7 +80,14 @@ const FretboardControls: FunctionComponent = () => {
       <StringInput key={index}>
         <TextInput
           value={note}
+          onFocus={(e) => {
+            setTempInput(e.target.value);
+            e.target.value = "";
+          }}
           onChange={(e) => handleInputChange(index, e.target.value)}
+          onBlur={(e) => {
+            if (e.target.value == "") handleInputChange(index, tempInput);
+          }}
           borderColor={getOutlineColor(note)}
         />
       </StringInput>
@@ -90,16 +97,18 @@ const FretboardControls: FunctionComponent = () => {
   return (
     <div>
       <FretboardControlsContainer>
-        <InputContainer isLeftHanded={isLeftHanded}>{renderInputs()}</InputContainer>
+        <InputContainer isLeftHanded={isLeftHanded}>
+          {renderInputs()}
+        </InputContainer>
         <FretBoardWrapper isLeftHanded={isLeftHanded}>
-            <FretBoard
+          <FretBoard
             rootNotes={rootNotes}
             highlightedNotes={highlightedNotes}
             numberOfFrets={numberOfFrets}
             startingFret={startingFret}
             showTextNotes={showTextNotes}
             isLeftHanded={isLeftHanded}
-            />
+          />
         </FretBoardWrapper>
       </FretboardControlsContainer>
       <HighlightedNotesControls
@@ -108,21 +117,22 @@ const FretboardControls: FunctionComponent = () => {
       />
       <CheckboxContainer>
         <CheckboxLabel>
-            <input
-                type="checkbox"
-                checked={isLeftHanded}
-                onChange={() => setIsLeftHanded(!isLeftHanded)}
-            /> Left Handed
+          <input
+            type="checkbox"
+            checked={isLeftHanded}
+            onChange={() => setIsLeftHanded(!isLeftHanded)}
+          />{" "}
+          Left Handed
         </CheckboxLabel>
         <CheckboxLabel>
-            <input
+          <input
             type="checkbox"
             checked={showTextNotes}
             onChange={() => setShowTextNotes(!showTextNotes)}
-            />
-            Show Text Notes
+          />
+          Show Text Notes
         </CheckboxLabel>
-    </CheckboxContainer>
+      </CheckboxContainer>
     </div>
   );
 };
