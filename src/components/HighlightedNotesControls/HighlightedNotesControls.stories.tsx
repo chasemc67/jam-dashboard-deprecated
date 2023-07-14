@@ -10,7 +10,7 @@ export default {
   component: HighlightedNotesControls,
 } as Meta;
 
-const Template: Story<HighlightedNotesControlsProps> = (args) => {
+const Template: Story<HighlightedNotesControlsProps> = args => {
   const [highlightedNotes, setHighlightedNotes] = useState([
     { note: 'C', color: 'grey' },
     { note: 'D', color: 'grey' },

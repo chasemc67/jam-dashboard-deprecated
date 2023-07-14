@@ -29,7 +29,7 @@ const FretContainer = styled.div<{ fretWidth: string }>`
   border: 1px solid #c0b7a8;
   padding: 10px;
   position: relative;
-  width: ${(props) => props.fretWidth};
+  width: ${props => props.fretWidth};
   height: 300px;
 `;
 
@@ -41,7 +41,7 @@ const FretString = styled.div`
 `;
 
 const NoteCircle = styled.div<{ color: string }>`
-  background-color: ${(props) => props.color};
+  background-color: ${props => props.color};
   border-radius: 50%;
   width: 20px;
   height: 20px;
@@ -58,7 +58,7 @@ const NoteCircle = styled.div<{ color: string }>`
 const FretMarker = styled.div<{ tallMarker?: boolean }>`
   background-color: #aaa;
   width: 75%;
-  height: ${(props) => (props.tallMarker ? '50%' : '25%')};
+  height: ${props => (props.tallMarker ? '50%' : '25%')};
   position: absolute;
   top: 50%;
   left: 50%;
@@ -66,11 +66,18 @@ const FretMarker = styled.div<{ tallMarker?: boolean }>`
   z-index: 1;
 `;
 
-const Fret: FunctionComponent<FretProps> = ({ rootNotes, fretNumber, highlightedNotes, showTextNotes }) => {
+const Fret: FunctionComponent<FretProps> = ({
+  rootNotes,
+  fretNumber,
+  highlightedNotes,
+  showTextNotes,
+}) => {
   const renderStrings = () => {
     return rootNotes.map((rootNote, index) => {
       const currentNote = getNoteAtFret(rootNote, fretNumber);
-      const highlightedNote = highlightedNotes.find((hn) => hn.note === currentNote);
+      const highlightedNote = highlightedNotes.find(
+        hn => hn.note === currentNote,
+      );
 
       return (
         <FretString key={index}>
