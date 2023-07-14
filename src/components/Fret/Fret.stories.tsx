@@ -8,13 +8,16 @@ export default {
   component: Fret,
 } as Meta;
 
-const Template: Story<FretProps> = (args) => <Fret {...args} />;
+const Template: Story<FretProps> = args => <Fret {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
   rootNote: 'C',
   fretNumber: 1,
-  highlightedNotes: [{note: 'C', color: "blue"}, {note: 'E', color: "red"}],
+  highlightedNotes: [
+    { note: 'C', color: 'blue' },
+    { note: 'E', color: 'red' },
+  ],
   rootNotes: ['E', 'A', 'D', 'G', 'B', 'E'],
   showTextNotes: true,
 };
