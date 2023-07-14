@@ -48,6 +48,16 @@ const CheckboxLabel = styled.label`
 
 const FretboardControls: FunctionComponent = () => {
   const [rootNotes, setRootNotes] = useState(["E", "A", "D", "G", "B", "E"]);
+
+  // New 'isFocused' state to track which inputs are in focus
+  const [isFocused, setIsFocused] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
   const [highlightedNotes, setHighlightedNotes] = useState<HighlightedNote[]>([
     { note: "C", color: "blue" },
     { note: "D", color: "red" },
@@ -79,13 +89,18 @@ const FretboardControls: FunctionComponent = () => {
     return rootNotes.map((note, index) => (
       <StringInput key={index}>
         <TextInput
-          value={note}
+          value={isFocused[index] ? "" : note}
           onFocus={(e) => {
+            const newIsFocused = [...isFocused];
+            newIsFocused[index] = true;
+            setIsFocused(newIsFocused);
             setTempInput(e.target.value);
-            e.target.value = "";
           }}
           onChange={(e) => handleInputChange(index, e.target.value)}
           onBlur={(e) => {
+            const newIsFocused = [...isFocused];
+            newIsFocused[index] = false;
+            setIsFocused(newIsFocused);
             if (e.target.value == "") handleInputChange(index, tempInput);
           }}
           borderColor={getOutlineColor(note)}
