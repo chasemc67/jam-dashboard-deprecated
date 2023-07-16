@@ -7,7 +7,7 @@ export default {
   component: FretBoard,
 } as Meta;
 
-const Template: Story<FretBoardProps> = (args) => <FretBoard {...args} />;
+const Template: Story<FretBoardProps> = args => <FretBoard {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

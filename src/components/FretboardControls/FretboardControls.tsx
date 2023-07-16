@@ -6,7 +6,6 @@ import FretBoard, { FretBoardProps } from '../FretBoard';
 import HighlightedNotesControls from '../HighlightedNotesControls';
 import { HighlightedNote } from '../Fret';
 
-
 const FretboardControlsContainer = styled.div`
   display: flex;
 `;
@@ -16,18 +15,18 @@ const InputContainer = styled.div<{ isLeftHanded: boolean }>`
   flex-direction: column;
   justify-content: space-between;
   height: 330px;
-  order: ${(props) => (props.isLeftHanded ? 1 : 0)};
+  order: ${props => (props.isLeftHanded ? 1 : 0)};
 `;
 
 const FretBoardWrapper = styled.div<{ isLeftHanded: boolean }>`
-  order: ${(props) => (props.isLeftHanded ? 0 : 1)};
+  order: ${props => (props.isLeftHanded ? 0 : 1)};
 `;
 
 const TextInput = styled.input<{ borderColor: string }>`
   width: 30px;
   height: 30px;
   text-align: center;
-  border: 5px solid ${(props) => props.borderColor};
+  border: 5px solid ${props => props.borderColor};
 `;
 
 const StringInput = styled.div`
@@ -72,7 +71,7 @@ const FretboardControls: FunctionComponent = () => {
   };
 
   const getOutlineColor = (note: string) => {
-    const foundNote = highlightedNotes.find((n) => n.note === note);
+    const foundNote = highlightedNotes.find(n => n.note === note);
     return foundNote ? foundNote.color : 'black';
   };
 
@@ -81,7 +80,7 @@ const FretboardControls: FunctionComponent = () => {
       <StringInput key={index}>
         <TextInput
           value={note}
-          onChange={(e) => handleInputChange(index, e.target.value)}
+          onChange={e => handleInputChange(index, e.target.value)}
           borderColor={getOutlineColor(note)}
         />
       </StringInput>
@@ -91,16 +90,18 @@ const FretboardControls: FunctionComponent = () => {
   return (
     <div>
       <FretboardControlsContainer>
-        <InputContainer isLeftHanded={isLeftHanded}>{renderInputs()}</InputContainer>
+        <InputContainer isLeftHanded={isLeftHanded}>
+          {renderInputs()}
+        </InputContainer>
         <FretBoardWrapper isLeftHanded={isLeftHanded}>
-            <FretBoard
+          <FretBoard
             rootNotes={rootNotes}
             highlightedNotes={highlightedNotes}
             numberOfFrets={numberOfFrets}
             startingFret={startingFret}
             showTextNotes={showTextNotes}
             isLeftHanded={isLeftHanded}
-            />
+          />
         </FretBoardWrapper>
       </FretboardControlsContainer>
       <HighlightedNotesControls
@@ -109,21 +110,22 @@ const FretboardControls: FunctionComponent = () => {
       />
       <CheckboxContainer>
         <CheckboxLabel>
-            <input
-                type="checkbox"
-                checked={isLeftHanded}
-                onChange={() => setIsLeftHanded(!isLeftHanded)}
-            /> Left Handed
+          <input
+            type="checkbox"
+            checked={isLeftHanded}
+            onChange={() => setIsLeftHanded(!isLeftHanded)}
+          />{' '}
+          Left Handed
         </CheckboxLabel>
         <CheckboxLabel>
-            <input
+          <input
             type="checkbox"
             checked={showTextNotes}
             onChange={() => setShowTextNotes(!showTextNotes)}
-            />
-            Show Text Notes
+          />
+          Show Text Notes
         </CheckboxLabel>
-    </CheckboxContainer>
+      </CheckboxContainer>
     </div>
   );
 };
