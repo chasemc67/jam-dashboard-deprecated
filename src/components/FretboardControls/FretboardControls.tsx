@@ -1,4 +1,5 @@
 // FretboardControls.tsx
+
 import React, { FunctionComponent, useState } from 'react';
 import styled from 'styled-components';
 import FretBoard, { FretBoardProps } from '../FretBoard';
