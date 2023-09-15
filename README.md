@@ -1,4 +1,4 @@
-&#x1F308;
+🌈 💩
 
 # Jam Dashboard
 
