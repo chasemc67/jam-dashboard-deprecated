@@ -18,6 +18,7 @@ npm run build
 firebase deploy
 ```
 
+
 ### `npm start`
 
 Runs the app in the development mode.\
