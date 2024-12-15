@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import FretboardControls from './components/FretboardControls/FretboardControls';
+import RandomPlayer from './components/Player/RandomPlayer';
 
 const AppBody = styled.div`
   margin: 20px;
@@ -11,6 +12,11 @@ const AppHeader = styled.header`
   justify-content: center;
 `;
 
+const ComponentDivider = styled.div`
+  margin: 40px 0;
+  border-top: 1px solid #eee;
+`;
+
 function App() {
   return (
     <div className="App">
@@ -19,6 +25,8 @@ function App() {
       </AppHeader>
       <AppBody>
         <FretboardControls />
+        <ComponentDivider />
+        <RandomPlayer />
       </AppBody>
     </div>
   );

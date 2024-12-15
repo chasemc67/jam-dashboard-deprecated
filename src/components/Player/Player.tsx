@@ -39,7 +39,6 @@ const Player: React.FC<PlayerProps> = ({ notes }) => {
 
   return (
     <div>
-      <p>Chord: {chord.join(' - ')}</p>
       <button onClick={playChordArpeggio}>Play Arpeggio</button>
       <button onClick={playChordSimultaneous}>Play Chord</button>
     </div>
