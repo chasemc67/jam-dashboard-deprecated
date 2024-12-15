@@ -56,68 +56,69 @@ export type HighlightedNotesControlsProps = {
   setHighlightedNotes: (notes: HighlightedNote[]) => void;
 };
 
-const HighlightedNotesControls: FunctionComponent<HighlightedNotesControlsProps> =
-  ({ highlightedNotes, setHighlightedNotes }) => {
-    const [inputValue, setInputValue] = useState(
-      highlightedNotes.map(n => n.note).join(', '),
-    );
+const HighlightedNotesControls: FunctionComponent<
+  HighlightedNotesControlsProps
+> = ({ highlightedNotes, setHighlightedNotes }) => {
+  const [inputValue, setInputValue] = useState(
+    highlightedNotes.map(n => n.note).join(', '),
+  );
 
-    const handleInputChange = (value: string) => {
-      setInputValue(value);
+  const handleInputChange = (value: string) => {
+    setInputValue(value);
 
-      const notes = value
-        .split(',')
-        .map(note => note.trim().toUpperCase())
-        .filter(note => note);
+    const notes = value
+      .split(',')
+      .map(note => note.trim().toUpperCase())
+      .filter(note => note);
 
-      const updatedHighlightedNotes = notes.map(note => {
-        const existingNote = highlightedNotes.find(n => n.note === note);
-        return existingNote || { note, color: 'grey' };
-      });
+    const updatedHighlightedNotes = notes.map(note => {
+      const existingNote = highlightedNotes.find(n => n.note === note);
+      return existingNote || { note, color: 'grey' };
+    });
 
-      setHighlightedNotes(updatedHighlightedNotes);
-    };
-
-    const handleColorChange = (note: string, color: string) => {
-      const updatedHighlightedNotes = highlightedNotes.map(n =>
-        n.note === note ? { ...n, color } : n,
-      );
-
-      setHighlightedNotes(updatedHighlightedNotes);
-    };
-
-    const renderColorPicker = (note: string, currentColor: string) => (
-      <ColorPicker
-        value={currentColor}
-        onChange={e => handleColorChange(note, e.target.value)}
-      >
-        {colors.map(color => (
-          <option key={color.value} value={color.value}>
-            {color.name}
-          </option>
-        ))}
-      </ColorPicker>
-    );
-
-    return (
-      <Container>
-        <TextInput
-          value={inputValue}
-          onChange={e => handleInputChange(e.target.value)}
-          placeholder="Enter comma-separated notes"
-        />
-        <ButtonsContainer>
-          {highlightedNotes.map((highlightedNote, index) => (
-            <div>
-              <NoteButton key={index} backgroundColor={highlightedNote.color}>
-                {highlightedNote.note}
-              </NoteButton>
-              {renderColorPicker(highlightedNote.note, highlightedNote.color)}
-            </div>
-          ))}
-        </ButtonsContainer>
-      </Container>
-    );
+    setHighlightedNotes(updatedHighlightedNotes);
   };
+
+  const handleColorChange = (note: string, color: string) => {
+    const updatedHighlightedNotes = highlightedNotes.map(n =>
+      n.note === note ? { ...n, color } : n,
+    );
+
+    setHighlightedNotes(updatedHighlightedNotes);
+  };
+
+  const renderColorPicker = (note: string, currentColor: string) => (
+    <ColorPicker
+      value={currentColor}
+      onChange={e => handleColorChange(note, e.target.value)}
+    >
+      {colors.map(color => (
+        <option key={color.value} value={color.value}>
+          {color.name}
+        </option>
+      ))}
+    </ColorPicker>
+  );
+
+  return (
+    <Container>
+      <TextInput
+        value={inputValue}
+        onChange={e => handleInputChange(e.target.value)}
+        placeholder="Enter comma-separated notes"
+      />
+      <ButtonsContainer>
+        {highlightedNotes.map((highlightedNote, index) => (
+          <div>
+            <NoteButton key={index} backgroundColor={highlightedNote.color}>
+              {highlightedNote.note}
+            </NoteButton>
+            {renderColorPicker(highlightedNote.note, highlightedNote.color)}
+          </div>
+        ))}
+      </ButtonsContainer>
+    </Container>
+  );
+};
 
 export default HighlightedNotesControls;

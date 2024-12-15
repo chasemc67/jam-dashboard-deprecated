@@ -17,6 +17,7 @@
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.9",
+    "tone": "^15.0.4",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
@@ -31,14 +32,24 @@
     "check-format": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,md}\""
   },
   "eslintConfig": {
-    "extends": ["react-app", "react-app/jest", "plugin:prettier/recommended"],
-    "plugins": ["prettier"],
+    "extends": [
+      "react-app",
+      "react-app/jest",
+      "plugin:prettier/recommended"
+    ],
+    "plugins": [
+      "prettier"
+    ],
     "rules": {
-      "prettier/prettier": ["error"]
+      "prettier/prettier": [
+        "error"
+      ]
     },
     "overrides": [
       {
-        "files": ["**/*.stories.*"],
+        "files": [
+          "**/*.stories.*"
+        ],
         "rules": {
           "import/no-anonymous-default-export": "off"
         }
@@ -46,7 +57,11 @@
     ]
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -54,9 +69,6 @@
     ]
   },
   "devDependencies": {
-    "eslint-config-prettier": "^8.7.0",
-    "eslint-plugin-prettier": "^5.0.0",
-    "prettier": "^2.7.0",
     "@storybook/addon-actions": "^6.5.16",
     "@storybook/addon-essentials": "^6.5.16",
     "@storybook/addon-interactions": "^6.5.16",
@@ -70,6 +82,9 @@
     "@testing-library/dom": "^9.2.0",
     "@types/styled-components": "^5.1.26",
     "babel-plugin-named-exports-order": "^0.0.2",
+    "eslint-config-prettier": "^8.7.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.4.2",
     "prop-types": "^15.8.1",
     "webpack": "^5.77.0"
   }
