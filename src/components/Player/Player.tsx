@@ -2,41 +2,24 @@ import React, { useState, useEffect, useRef } from 'react';
 import * as Tone from 'tone';
 
 interface PlayerProps {
-  chordInput: string;
+  notes: string[];
 }
 
-const Player: React.FC<PlayerProps> = ({ chordInput }) => {
-  const [chord, setChord] = useState<string[]>([]);
-  const synthRef = useRef<Tone.Synth | null>(null);
+const Player: React.FC<PlayerProps> = ({ notes }) => {
+  const [chord, setChord] = useState<string[]>(notes);
+  const synthRef = useRef<Tone.PolySynth | null>(null);
 
   useEffect(() => {
     if (!synthRef.current) {
-      synthRef.current = new Tone.Synth().toDestination();
+      synthRef.current = new Tone.PolySynth(Tone.Synth).toDestination();
     }
   }, []);
 
-  const generateRandomChord = () => {
-    const notesPool = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'];
-    const chordNotes: string[] = [];
-
-    while (chordNotes.length < 3) {
-      const note = notesPool[Math.floor(Math.random() * notesPool.length)];
-      if (!chordNotes.includes(note)) {
-        chordNotes.push(note);
-      }
-    }
-
-    setChord(chordNotes);
-  };
-
   useEffect(() => {
-    // In a real implementation, you'd parse chordInput into notes.
-    // For now, just regenerate a random chord on input change.
-    generateRandomChord();
-  }, [chordInput]);
+    setChord(notes);
+  }, [notes]);
 
-  const playChord = async () => {
-    // Ensure audio context is started
+  const playChordArpeggio = async () => {
     await Tone.start();
     const now = Tone.now();
     if (synthRef.current) {
@@ -46,10 +29,19 @@ const Player: React.FC<PlayerProps> = ({ chordInput }) => {
     }
   };
 
+  const playChordSimultaneous = async () => {
+    await Tone.start();
+    const now = Tone.now();
+    if (synthRef.current) {
+      synthRef.current.triggerAttackRelease(chord, '2n', now);
+    }
+  };
+
   return (
     <div>
       <p>Chord: {chord.join(' - ')}</p>
-      <button onClick={playChord}>Play Chord</button>
+      <button onClick={playChordArpeggio}>Play Arpeggio</button>
+      <button onClick={playChordSimultaneous}>Play Chord</button>
     </div>
   );
 };

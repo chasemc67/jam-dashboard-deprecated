@@ -1,10 +1,9 @@
-// src/components/Player/Player.stories.tsx
 import React, { useState } from 'react';
 import { Meta, Story } from '@storybook/react';
 import Player from './Player';
 
 interface PlayerProps {
-  chordInput: string;
+  notes: string[];
 }
 
 export default {
@@ -13,28 +12,33 @@ export default {
 } as Meta;
 
 const Template: Story<PlayerProps> = args => {
-  const [chordInput, setChordInput] = useState('Cmaj7');
+  const [notes, setNotes] = useState(['C4', 'E4', 'G4']);
+  const [inputValue, setInputValue] = useState('C4,E4,G4');
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputValue(value);
+    const newNotes = value.split(',').map(note => note.trim());
+    setNotes(newNotes);
+  };
 
   return (
     <div style={{ padding: '20px' }}>
       <label>
-        Enter a chord name (e.g. Cmaj7):{' '}
-        <input
-          type="text"
-          value={chordInput}
-          onChange={e => setChordInput(e.target.value)}
-        />
+        Enter notes (comma-separated, e.g. C4,E4,G4):{' '}
+        <input type="text" value={inputValue} onChange={handleInputChange} />
       </label>
-      <Player chordInput={chordInput} />
+      <Player notes={notes} />
     </div>
   );
 };
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = {
+  notes: ['C4', 'E4', 'G4'],
+};
 
-// // You could also create additional stories with different initial values
-// export const MinorChord = Template.bind({});
-// MinorChord.args = {
-//     chordInput: 'Amin'
-// };
+export const MinorChord = Template.bind({});
+MinorChord.args = {
+  notes: ['A4', 'C5', 'E5'],
+};
