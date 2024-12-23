@@ -48,7 +48,7 @@ const CheckboxLabel = styled.label`
 `;
 
 const FretboardControls: FunctionComponent = () => {
-  const [rootNotes, setRootNotes] = useState(['E', 'A', 'D', 'G', 'B', 'E']);
+  const [rootNotes, setRootNotes] = useState(['E', 'B', 'G', 'D', 'A', 'E']);
   const [highlightedNotes, setHighlightedNotes] = useState<HighlightedNote[]>([
     { note: 'C', color: 'blue' },
     { note: 'D', color: 'red' },
