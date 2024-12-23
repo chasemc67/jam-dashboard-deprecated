@@ -1,6 +1,7 @@
 // HighlightedNotesControls.tsx
 import React, { FunctionComponent, useState } from 'react';
 import styled from 'styled-components';
+import { Scale, ScaleType } from 'tonal';
 
 const Container = styled.div`
   display: flex;
@@ -35,6 +36,30 @@ const ColorPicker = styled.select`
   width: 60%;
 `;
 
+const ScaleControls = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  align-items: center;
+`;
+
+const Select = styled.select`
+  height: 30px;
+  min-width: 100px;
+`;
+
+const Button = styled.button`
+  height: 30px;
+  padding: 0 15px;
+  cursor: pointer;
+`;
+
+const DetectedScales = styled.div`
+  margin: 10px 0;
+  font-size: 0.9em;
+  color: #666;
+`;
+
 const colors = [
   { name: 'Grey', value: 'grey' },
   { name: 'Blue', value: 'blue' },
@@ -44,6 +69,26 @@ const colors = [
   { name: 'Brown', value: 'brown' },
   { name: 'Purple', value: 'purple' },
   { name: 'Teal', value: 'teal' },
+];
+
+const possibleRoots = [
+  'C',
+  'C#',
+  'Db',
+  'D',
+  'D#',
+  'Eb',
+  'E',
+  'F',
+  'F#',
+  'Gb',
+  'G',
+  'G#',
+  'Ab',
+  'A',
+  'A#',
+  'Bb',
+  'B',
 ];
 
 interface HighlightedNote {
@@ -62,10 +107,12 @@ const HighlightedNotesControls: FunctionComponent<
   const [inputValue, setInputValue] = useState(
     highlightedNotes.map(n => n.note).join(', '),
   );
+  const [selectedRoot, setSelectedRoot] = useState('C');
+  const [selectedScaleType, setSelectedScaleType] = useState('major');
+  const [detectedScales, setDetectedScales] = useState<string[]>([]);
 
   const handleInputChange = (value: string) => {
     setInputValue(value);
-
     const notes = value
       .split(',')
       .map(note => note.trim().toUpperCase())
@@ -79,11 +126,25 @@ const HighlightedNotesControls: FunctionComponent<
     setHighlightedNotes(updatedHighlightedNotes);
   };
 
+  const handleScaleSelect = () => {
+    const scaleName = `${selectedRoot} ${selectedScaleType}`;
+    const scaleObj = Scale.get(scaleName);
+    handleInputChange(scaleObj.notes.join(', '));
+  };
+
+  const handleDetectScales = () => {
+    const notes = inputValue
+      .split(',')
+      .map(note => note.trim())
+      .filter(note => note);
+    const detected = Scale.detect(notes);
+    setDetectedScales(detected);
+  };
+
   const handleColorChange = (note: string, color: string) => {
     const updatedHighlightedNotes = highlightedNotes.map(n =>
       n.note === note ? { ...n, color } : n,
     );
-
     setHighlightedNotes(updatedHighlightedNotes);
   };
 
@@ -102,15 +163,47 @@ const HighlightedNotesControls: FunctionComponent<
 
   return (
     <Container>
+      <ScaleControls>
+        <Select
+          value={selectedRoot}
+          onChange={e => setSelectedRoot(e.target.value)}
+        >
+          {possibleRoots.map(root => (
+            <option key={root} value={root}>
+              {root}
+            </option>
+          ))}
+        </Select>
+        <Select
+          value={selectedScaleType}
+          onChange={e => setSelectedScaleType(e.target.value)}
+        >
+          {ScaleType.all().map(scale => (
+            <option key={scale.name} value={scale.name}>
+              {scale.name}
+            </option>
+          ))}
+        </Select>
+        <Button onClick={handleScaleSelect}>Apply Scale</Button>
+      </ScaleControls>
+
       <TextInput
         value={inputValue}
         onChange={e => handleInputChange(e.target.value)}
         placeholder="Enter comma-separated notes"
       />
+      <Button onClick={handleDetectScales}>Detect Scales</Button>
+
+      {detectedScales.length > 0 && (
+        <DetectedScales>
+          Matching scales: {detectedScales.join(', ')}
+        </DetectedScales>
+      )}
+
       <ButtonsContainer>
         {highlightedNotes.map((highlightedNote, index) => (
-          <div>
-            <NoteButton key={index} backgroundColor={highlightedNote.color}>
+          <div key={index}>
+            <NoteButton backgroundColor={highlightedNote.color}>
               {highlightedNote.note}
             </NoteButton>
             {renderColorPicker(highlightedNote.note, highlightedNote.color)}
