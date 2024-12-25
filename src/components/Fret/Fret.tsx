@@ -1,7 +1,16 @@
 // Fret.tsx
+// This component renders a single fret on a guitar
+// It renders a box with a line for each string (6 by default)
+// and also takes a list of notes which should be highlighted/displayed on the fret.
+// it calculates which notes would appear on each string, by its offset (fret number)
+// and root notes each string is tuned to.
+
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
-import { getNoteAtFret } from '../../utils/musicTheoryUtils';
+import {
+  getNoteAtFret,
+  areNotesEquivalent,
+} from '../../utils/musicTheoryUtils';
 
 export type HighlightedNote = {
   note: string;
@@ -75,15 +84,15 @@ const Fret: FunctionComponent<FretProps> = ({
   const renderStrings = () => {
     return rootNotes.map((rootNote, index) => {
       const currentNote = getNoteAtFret(rootNote, fretNumber);
-      const highlightedNote = highlightedNotes.find(
-        hn => hn.note === currentNote,
+      const highlightedNote = highlightedNotes.find(hn =>
+        areNotesEquivalent(hn.note, currentNote),
       );
 
       return (
         <FretString key={index}>
           {highlightedNote && (
             <NoteCircle color={highlightedNote.color}>
-              {showTextNotes && currentNote}
+              {showTextNotes && highlightedNote.note}
             </NoteCircle>
           )}
         </FretString>

@@ -12,7 +12,6 @@ const Template: Story<FretProps> = args => <Fret {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  rootNote: 'C',
   fretNumber: 1,
   highlightedNotes: [
     { note: 'C', color: 'blue' },
