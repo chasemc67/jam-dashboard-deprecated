@@ -11,6 +11,7 @@ With Jam Dashboard you can highlight just the notes you need, in any tuning, and
 npm run format
 npm start
 npm run storybook
+npm run test
 ```
 
 ## Deploying Changes to Firebase
