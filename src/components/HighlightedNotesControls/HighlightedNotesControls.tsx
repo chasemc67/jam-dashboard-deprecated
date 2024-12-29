@@ -115,7 +115,14 @@ const HighlightedNotesControls: FunctionComponent<
     setInputValue(value);
     const notes = value
       .split(',')
-      .map(note => note.trim().toUpperCase())
+      .map(note => {
+        const trimmedNote = note.trim();
+        if (!trimmedNote) return '';
+        return (
+          trimmedNote.charAt(0).toUpperCase() +
+          trimmedNote.slice(1).toLowerCase()
+        );
+      })
       .filter(note => note);
 
     const updatedHighlightedNotes = notes.map(note => {
