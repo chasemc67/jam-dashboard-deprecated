@@ -39,12 +39,23 @@ const CheckboxContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 10px;
+  gap: 5px;
 `;
 
 const CheckboxLabel = styled.label`
   display: flex;
   align-items: center;
   gap: 5px;
+`;
+
+const NumberInputLabel = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`;
+
+const NumberInput = styled.input`
+  width: 60px;
 `;
 
 const FretboardControls: FunctionComponent = () => {
@@ -111,6 +122,16 @@ const FretboardControls: FunctionComponent = () => {
         setHighlightedNotes={setHighlightedNotes}
       />
       <CheckboxContainer>
+        <NumberInputLabel>
+          Number of Frets:
+          <NumberInput
+            type="number"
+            min="1"
+            max="24"
+            value={numberOfFrets}
+            onChange={e => setNumberOfFrets(Number(e.target.value))}
+          />
+        </NumberInputLabel>
         <CheckboxLabel>
           <input
             type="checkbox"
