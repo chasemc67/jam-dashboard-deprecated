@@ -30,9 +30,9 @@ const areNotesEquivalent = (note1: string, note2: string): boolean => {
 };
 
 const getNoteAtFret = (rootNote: string, fretNumber: number): string => {
-  const rootIndex = notes.indexOf(rootNote);
-  const noteIndex = (rootIndex + fretNumber) % notes.length;
-  return notes[noteIndex];
+  const rootPosition = getNotePosition(rootNote);
+  const newPosition = (rootPosition + fretNumber) % 12;
+  return notes[newPosition];
 };
 
 export { getNoteAtFret, areNotesEquivalent };

@@ -48,7 +48,7 @@ const CheckboxLabel = styled.label`
 `;
 
 const FretboardControls: FunctionComponent = () => {
-  const [rootNotes, setRootNotes] = useState(['E', 'B', 'G', 'D', 'A', 'E']);
+  const [rootNotes, setRootNotes] = useState(['E', 'B', 'G', 'Db', 'A', 'E']);
   const [highlightedNotes, setHighlightedNotes] = useState<HighlightedNote[]>([
     { note: 'C', color: 'blue' },
     { note: 'D', color: 'red' },
@@ -65,8 +65,10 @@ const FretboardControls: FunctionComponent = () => {
   const [isLeftHanded, setIsLeftHanded] = useState(false);
 
   const handleInputChange = (index: number, value: string) => {
+    const processedValue =
+      value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
     const updatedRootNotes = [...rootNotes];
-    updatedRootNotes[index] = value;
+    updatedRootNotes[index] = processedValue;
     setRootNotes(updatedRootNotes);
   };
 
