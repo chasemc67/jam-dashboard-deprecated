@@ -2,7 +2,7 @@
 
 import React, { FunctionComponent, useState } from 'react';
 import styled from 'styled-components';
-import FretBoard, { FretBoardProps } from '../FretBoard';
+import FretBoard from '../FretBoard';
 import HighlightedNotesControls from '../HighlightedNotesControls';
 import { HighlightedNote } from '../Fret';
 
@@ -71,6 +71,7 @@ const FretboardControls: FunctionComponent = () => {
   ]);
 
   const [numberOfFrets, setNumberOfFrets] = useState(12);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [startingFret, setStartingFret] = useState(0);
   const [showTextNotes, setShowTextNotes] = useState(true);
   const [isLeftHanded, setIsLeftHanded] = useState(false);
