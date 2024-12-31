@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import FretboardControls from './components/FretboardControls/FretboardControls';
 import RandomPlayer from './components/Player/RandomPlayer';
-
+import GamePlayer from './components/Player/GamePlayer';
 const AppBody = styled.div`
   margin: 20px;
 `;
@@ -27,6 +27,8 @@ function App() {
         <FretboardControls />
         <ComponentDivider />
         <RandomPlayer />
+        <ComponentDivider />
+        <GamePlayer />
       </AppBody>
     </div>
   );
