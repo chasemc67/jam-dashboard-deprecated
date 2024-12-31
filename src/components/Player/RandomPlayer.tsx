@@ -20,21 +20,41 @@ const possibleKeys = [
   'B',
 ].map(note => `${note} major`);
 
-interface ChordTypeOption {
-  value: string;
+interface ChordTypeGroup {
   label: string;
+  value: string[];
 }
+
+const chordTypeGroups: ChordTypeGroup[] = [
+  {
+    label: 'Simple Triads',
+    value: ['maj', 'min'],
+  },
+  {
+    label: 'Seventh Chords',
+    value: ['7', 'maj7', 'min7', 'dim7'],
+  },
+  {
+    label: 'Extended Chords',
+    value: ['9', '11', '13', 'maj9', 'min9'],
+  },
+  {
+    label: 'Suspended Chords',
+    value: ['sus2', 'sus4'],
+  },
+  {
+    label: 'Augmented & Diminished',
+    value: ['aug', 'dim'],
+  },
+];
 
 const RandomPlayer: React.FC = () => {
   const [selectedKey, setSelectedKey] = useState<string>('C major');
-  const [selectedChordTypes, setSelectedChordTypes] = useState<string[]>([
-    'maj',
-    'min',
-    '7',
+  const [selectedChordGroups, setSelectedChordGroups] = useState<
+    ChordTypeGroup[]
+  >([
+    chordTypeGroups[0], // Start with Simple Triads selected
   ]);
-  const [availableChordTypes, setAvailableChordTypes] = useState<
-    ChordTypeOption[]
-  >([]);
   const [currentChord, setCurrentChord] = useState<string[]>([
     'C4',
     'E4',
@@ -43,18 +63,19 @@ const RandomPlayer: React.FC = () => {
   const [currentChordName, setCurrentChordName] = useState<string>('C major');
   const [showNotes, setShowNotes] = useState<boolean>(false);
 
-  useEffect(() => {
-    // Get all available chord types from Tonal and convert to react-select options
-    const allChordTypes = ChordType.all().map(ct => ({
-      value: ct.aliases[0],
-      label: ct.aliases[0],
-    }));
-    setAvailableChordTypes(allChordTypes);
-  }, []);
+  // Compute the active chord types from the selected groups
+  const getActiveChordTypes = () => {
+    return Array.from(
+      new Set(selectedChordGroups.flatMap(group => group.value)),
+    );
+  };
 
   const generateRandomChord = () => {
     // Get all possible chords in the selected key
-    const chordsInKey = getEveryChordInScale(selectedKey, selectedChordTypes);
+    const chordsInKey = getEveryChordInScale(
+      selectedKey,
+      getActiveChordTypes(),
+    );
 
     // Flatten the array of chords and filter out any null values
     const allPossibleChords = chordsInKey
@@ -77,10 +98,10 @@ const RandomPlayer: React.FC = () => {
     setCurrentChordName(randomChord);
   };
 
-  const handleChordTypeChange = (
-    selectedOptions: readonly ChordTypeOption[],
+  const handleChordGroupChange = (
+    selectedOptions: readonly ChordTypeGroup[],
   ) => {
-    setSelectedChordTypes(selectedOptions.map(option => option.value));
+    setSelectedChordGroups([...selectedOptions]);
   };
 
   const toggleNotes = () => {
@@ -114,11 +135,9 @@ const RandomPlayer: React.FC = () => {
               isMulti
               closeMenuOnSelect={false}
               name="chord-types"
-              options={availableChordTypes}
-              value={availableChordTypes.filter(option =>
-                selectedChordTypes.includes(option.value),
-              )}
-              onChange={handleChordTypeChange}
+              options={chordTypeGroups}
+              value={selectedChordGroups}
+              onChange={handleChordGroupChange}
               className="basic-multi-select"
               classNamePrefix="select"
             />
