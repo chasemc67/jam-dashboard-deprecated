@@ -25,6 +25,9 @@ interface ChordTypeGroup {
   value: string[];
 }
 
+// Get all available chord types from Tonal
+const allChordTypes = ChordType.all().map(ct => ct.aliases[0]);
+
 const chordTypeGroups: ChordTypeGroup[] = [
   {
     label: 'Simple Triads',
@@ -46,6 +49,10 @@ const chordTypeGroups: ChordTypeGroup[] = [
     label: 'Augmented & Diminished',
     value: ['aug', 'dim'],
   },
+  {
+    label: 'Everything',
+    value: allChordTypes,
+  },
 ];
 
 const RandomPlayer: React.FC = () => {
@@ -53,7 +60,7 @@ const RandomPlayer: React.FC = () => {
   const [selectedChordGroups, setSelectedChordGroups] = useState<
     ChordTypeGroup[]
   >([
-    chordTypeGroups[0], // Start with Simple Triads selected
+    chordTypeGroups[1], // Start with Simple Triads selected
   ]);
   const [currentChord, setCurrentChord] = useState<string[]>([
     'C4',
@@ -65,9 +72,11 @@ const RandomPlayer: React.FC = () => {
 
   // Compute the active chord types from the selected groups
   const getActiveChordTypes = () => {
-    return Array.from(
-      new Set(selectedChordGroups.flatMap(group => group.value)),
+    // Flatten all selected groups' values and remove duplicates
+    const uniqueChordTypes = new Set(
+      selectedChordGroups.flatMap(group => group.value),
     );
+    return Array.from(uniqueChordTypes);
   };
 
   const generateRandomChord = () => {
