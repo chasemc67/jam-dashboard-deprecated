@@ -112,6 +112,7 @@ const RandomPlayer: React.FC = () => {
           <div style={{ width: '300px' }}>
             <Select
               isMulti
+              closeMenuOnSelect={false}
               name="chord-types"
               options={availableChordTypes}
               value={availableChordTypes.filter(option =>
