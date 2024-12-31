@@ -13,9 +13,7 @@ const RandomPlayer: React.FC = () => {
   const [selectedKey, setSelectedKey] = useState<string>('C major');
   const [selectedChordGroups, setSelectedChordGroups] = useState<
     ChordTypeGroup[]
-  >([
-    chordTypeGroups[1], // Start with Simple Triads selected
-  ]);
+  >([chordTypeGroups[0]]);
   const [currentChord, setCurrentChord] = useState<string[]>([
     'C4',
     'E4',

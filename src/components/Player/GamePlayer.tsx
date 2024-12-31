@@ -20,9 +20,7 @@ const GamePlayer: React.FC = () => {
   const [selectedKey, setSelectedKey] = useState<string>('C major');
   const [selectedChordGroups, setSelectedChordGroups] = useState<
     ChordTypeGroup[]
-  >([
-    chordTypeGroups[1], // Start with Seventh Chords selected
-  ]);
+  >([chordTypeGroups[0]]);
   const [gameStarted, setGameStarted] = useState(false);
   const [currentChordIndex, setCurrentChordIndex] = useState(0);
   const [gameChords, setGameChords] = useState<GameChord[]>([]);
