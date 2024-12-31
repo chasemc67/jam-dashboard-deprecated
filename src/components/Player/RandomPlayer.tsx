@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChordType, Chord } from 'tonal';
+import Select from 'react-select';
 import Player from './Player';
 import { getEveryChordInScale } from '../../utils/scaleChords';
 
@@ -19,6 +20,11 @@ const possibleKeys = [
   'B',
 ].map(note => `${note} major`);
 
+interface ChordTypeOption {
+  value: string;
+  label: string;
+}
+
 const RandomPlayer: React.FC = () => {
   const [selectedKey, setSelectedKey] = useState<string>('C major');
   const [selectedChordTypes, setSelectedChordTypes] = useState<string[]>([
@@ -26,7 +32,9 @@ const RandomPlayer: React.FC = () => {
     'min',
     '7',
   ]);
-  const [availableChordTypes, setAvailableChordTypes] = useState<string[]>([]);
+  const [availableChordTypes, setAvailableChordTypes] = useState<
+    ChordTypeOption[]
+  >([]);
   const [currentChord, setCurrentChord] = useState<string[]>([
     'C4',
     'E4',
@@ -36,8 +44,11 @@ const RandomPlayer: React.FC = () => {
   const [showNotes, setShowNotes] = useState<boolean>(false);
 
   useEffect(() => {
-    // Get all available chord types from Tonal
-    const allChordTypes = ChordType.all().map(ct => ct.aliases[0]);
+    // Get all available chord types from Tonal and convert to react-select options
+    const allChordTypes = ChordType.all().map(ct => ({
+      value: ct.aliases[0],
+      label: ct.aliases[0],
+    }));
     setAvailableChordTypes(allChordTypes);
   }, []);
 
@@ -66,13 +77,10 @@ const RandomPlayer: React.FC = () => {
     setCurrentChordName(randomChord);
   };
 
-  const handleChordTypeChange = (chordType: string) => {
-    setSelectedChordTypes(prev => {
-      if (prev.includes(chordType)) {
-        return prev.filter(type => type !== chordType);
-      }
-      return [...prev, chordType];
-    });
+  const handleChordTypeChange = (
+    selectedOptions: readonly ChordTypeOption[],
+  ) => {
+    setSelectedChordTypes(selectedOptions.map(option => option.value));
   };
 
   const toggleNotes = () => {
@@ -101,27 +109,18 @@ const RandomPlayer: React.FC = () => {
 
         <div style={{ marginBottom: '10px' }}>
           <div>Chord Types:</div>
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '10px',
-              marginTop: '5px',
-            }}
-          >
-            {availableChordTypes.map(type => (
-              <label
-                key={type}
-                style={{ display: 'inline-flex', alignItems: 'center' }}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedChordTypes.includes(type)}
-                  onChange={() => handleChordTypeChange(type)}
-                />
-                <span style={{ marginLeft: '5px' }}>{type}</span>
-              </label>
-            ))}
+          <div style={{ width: '300px' }}>
+            <Select
+              isMulti
+              name="chord-types"
+              options={availableChordTypes}
+              value={availableChordTypes.filter(option =>
+                selectedChordTypes.includes(option.value),
+              )}
+              onChange={handleChordTypeChange}
+              className="basic-multi-select"
+              classNamePrefix="select"
+            />
           </div>
         </div>
 
