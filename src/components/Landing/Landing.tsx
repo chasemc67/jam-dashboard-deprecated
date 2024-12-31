@@ -1,3 +1,31 @@
+/* Prompt
+Make me a landing page for my website using ShadCN and react. 
+
+In the middle of the landing page there should be a Title and description, then a dropdown, divider, and textbox beneath it. Sort of like this:
+
+<PageStart>
+===========
+
+Title
+Desc
+
+<Dropdown>
+ ----- or -----
+<Textbox> <confirm button>
+
+==========
+</PageStart>
+
+When you make a selection in the dropdown, or click the confirm button, the title and desc should fade out, and the Dropdown and Textbox should animate up to the top of the page, and share the same line. so it looks like this:
+
+<PageStart>
+===========
+<Dropdown> or <Textbox> <confirm button>
+
+==========
+</PageStart>
+*/
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
