@@ -1,59 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { ChordType, Chord } from 'tonal';
-import Select from 'react-select';
+import React, { useState } from 'react';
+import { Chord } from 'tonal';
 import Player from './Player';
 import { getEveryChordInScale } from '../../utils/scaleChords';
-
-// Define all possible keys (using just major scales for now)
-const possibleKeys = [
-  'C',
-  'C#',
-  'D',
-  'D#',
-  'E',
-  'F',
-  'F#',
-  'G',
-  'G#',
-  'A',
-  'A#',
-  'B',
-].map(note => `${note} major`);
-
-interface ChordTypeGroup {
-  label: string;
-  value: string[];
-}
-
-// Get all available chord types from Tonal
-const allChordTypes = ChordType.all().map(ct => ct.aliases[0]);
-
-const chordTypeGroups: ChordTypeGroup[] = [
-  {
-    label: 'Simple Triads',
-    value: ['maj', 'min'],
-  },
-  {
-    label: 'Seventh Chords',
-    value: ['7', 'maj7', 'min7', 'dim7'],
-  },
-  {
-    label: 'Extended Chords',
-    value: ['9', '11', '13', 'maj9', 'min9'],
-  },
-  {
-    label: 'Suspended Chords',
-    value: ['sus2', 'sus4'],
-  },
-  {
-    label: 'Augmented & Diminished',
-    value: ['aug', 'dim'],
-  },
-  {
-    label: 'Everything',
-    value: allChordTypes,
-  },
-];
+import {
+  ChordTypeGroup,
+  chordTypeGroups,
+  getActiveChordTypes,
+} from '../../utils/chordPlayerUtils';
+import ChordSelectionControls from './ChordSelectionControls';
 
 const RandomPlayer: React.FC = () => {
   const [selectedKey, setSelectedKey] = useState<string>('C major');
@@ -70,20 +24,11 @@ const RandomPlayer: React.FC = () => {
   const [currentChordName, setCurrentChordName] = useState<string>('C major');
   const [showNotes, setShowNotes] = useState<boolean>(false);
 
-  // Compute the active chord types from the selected groups
-  const getActiveChordTypes = () => {
-    // Flatten all selected groups' values and remove duplicates
-    const uniqueChordTypes = new Set(
-      selectedChordGroups.flatMap(group => group.value),
-    );
-    return Array.from(uniqueChordTypes);
-  };
-
   const generateRandomChord = () => {
     // Get all possible chords in the selected key
     const chordsInKey = getEveryChordInScale(
       selectedKey,
-      getActiveChordTypes(),
+      getActiveChordTypes(selectedChordGroups),
     );
 
     // Flatten the array of chords and filter out any null values
@@ -120,38 +65,12 @@ const RandomPlayer: React.FC = () => {
   return (
     <div style={{ padding: '20px' }}>
       <div style={{ marginBottom: '20px' }}>
-        <div style={{ marginBottom: '10px' }}>
-          <label>
-            Key:
-            <select
-              value={selectedKey}
-              onChange={e => setSelectedKey(e.target.value)}
-              style={{ marginLeft: '10px' }}
-            >
-              {possibleKeys.map(key => (
-                <option key={key} value={key}>
-                  {key}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-
-        <div style={{ marginBottom: '10px' }}>
-          <div>Chord Types:</div>
-          <div style={{ width: '300px' }}>
-            <Select
-              isMulti
-              closeMenuOnSelect={false}
-              name="chord-types"
-              options={chordTypeGroups}
-              value={selectedChordGroups}
-              onChange={handleChordGroupChange}
-              className="basic-multi-select"
-              classNamePrefix="select"
-            />
-          </div>
-        </div>
+        <ChordSelectionControls
+          selectedKey={selectedKey}
+          onKeyChange={setSelectedKey}
+          selectedChordGroups={selectedChordGroups}
+          onChordGroupsChange={handleChordGroupChange}
+        />
 
         <button onClick={generateRandomChord}>Generate</button>
         <button onClick={toggleNotes}>Reveal</button>
