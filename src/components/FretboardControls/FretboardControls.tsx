@@ -59,7 +59,7 @@ const NumberInput = styled.input`
 `;
 
 const FretboardControls: FunctionComponent = () => {
-  const [rootNotes, setRootNotes] = useState(['E', 'B', 'G', 'Db', 'A', 'E']);
+  const [rootNotes, setRootNotes] = useState(['E', 'B', 'G', 'D', 'A', 'E']);
   const [highlightedNotes, setHighlightedNotes] = useState<HighlightedNote[]>([
     { note: 'C', color: 'blue' },
     { note: 'D', color: 'red' },
